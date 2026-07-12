@@ -117,7 +117,7 @@ export default function Home() {
         </div>
 
         {/* hero content */}
-        <div className="mx-auto grid w-full max-w-page gap-10 px-8 pb-10 pt-12 lg:grid-cols-[1fr_480px] lg:items-start lg:gap-14 lg:pt-16">
+        <div className="mx-auto grid w-full max-w-page gap-10 px-8 pb-10 pt-12 lg:grid-cols-[1fr_560px] lg:items-center lg:gap-14 lg:pt-16">
 
           {/* left: copy */}
           <div className="flex flex-col">
@@ -325,7 +325,7 @@ export default function Home() {
         }}
       >
         <div className="mx-auto max-w-narrow">
-          <div className="grid gap-12 lg:grid-cols-[1fr_480px] lg:items-center">
+          <div className="grid gap-12 lg:grid-cols-[1fr_560px] lg:items-center">
             <div>
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">
                 Limited early access
