@@ -1,7 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
+import "server-only";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import { createClient } from "@supabase/supabase-js";
+import { normalizePkPhone, type InquiryInput } from "@/lib/inquiries";
 
 export type StudentInquiryInsert = {
   full_name: string;
@@ -15,30 +15,52 @@ export type StudentInquiryInsert = {
   notes?: string;
 };
 
-export type StudentInquiryRow = StudentInquiryInsert & {
-  id: string;
-  created_at: string;
-};
+// Server-only client. It uses the publishable (anon) key, which is safe here
+// because student_inquiries grants anon INSERT and nothing else — leads can
+// never be read back with this key.
+function supabaseServer() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
 
-const supabase =
-  supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : null;
-
-export async function insertStudentInquiry(input: StudentInquiryInsert): Promise<StudentInquiryRow | null> {
-  if (!supabase) {
-    return null;
+  if (!url || !key) {
+    throw new Error(
+      "Missing SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY — see .env.example.",
+    );
   }
 
-  const { data, error } = await supabase.from("student_inquiries").insert([{
-    ...input,
-    status: input.status ?? "new",
-    notes: input.notes ?? "",
-  }]).select("id, created_at, full_name, phone, email, university, campus, program, home_city, status, notes").single();
+  return createClient(url, key, { auth: { persistSession: false } });
+}
+
+export async function insertStudentInquiry(input: StudentInquiryInsert): Promise<void> {
+  // No .select() here on purpose: reading the row back would need a SELECT
+  // policy, and anon is insert-only.
+  const { error } = await supabaseServer()
+    .from("student_inquiries")
+    .insert({
+      ...input,
+      status: input.status ?? "new",
+      notes: input.notes ?? "",
+    });
 
   if (error) {
     throw error;
   }
+}
 
-  return data;
+/**
+ * Persists an inquiry from the landing page form.
+ *
+ * Throws if the insert fails. A lost lead must surface as an error the student
+ * can retry, never as a silent success.
+ */
+export async function saveInquiry(input: InquiryInput): Promise<void> {
+  await insertStudentInquiry({
+    full_name: input.fullName.trim(),
+    phone: normalizePkPhone(input.phone),
+    email: input.email.trim().toLowerCase(),
+    university: input.university.trim(),
+    campus: input.campus.trim(),
+    program: input.program.trim(),
+    home_city: input.homeCity.trim(),
+  });
 }

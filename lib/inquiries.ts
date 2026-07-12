@@ -8,13 +8,6 @@ export type InquiryInput = {
   homeCity: string;
 };
 
-export type InquiryRecord = InquiryInput & {
-  id: string;
-  createdAt: string;
-  status: "new";
-  notes: string;
-};
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PK_PHONE_RE = /^(?:\+92|0092|0)3\d{9}$/;
 
@@ -64,68 +57,5 @@ export function validateInquiry(input: Partial<InquiryInput>): FieldErrors {
   return errors;
 }
 
-const submittedInquiries: InquiryRecord[] = [];
-const DEDUPE_WINDOW_MS = 5 * 60 * 1000;
-
-export async function saveInquiry(input: InquiryInput): Promise<{ record: InquiryRecord; duplicate: boolean }> {
-  const email = input.email.trim().toLowerCase();
-  const phone = normalizePkPhone(input.phone);
-  const now = Date.now();
-
-  const recent = submittedInquiries.find(
-    (r) =>
-      r.email.toLowerCase() === email &&
-      normalizePkPhone(r.phone) === phone &&
-      now - new Date(r.createdAt).getTime() < DEDUPE_WINDOW_MS,
-  );
-  if (recent) {
-    return { record: recent, duplicate: true };
-  }
-
-  const record: InquiryRecord = {
-    ...input,
-    fullName: input.fullName.trim(),
-    phone,
-    email,
-    university: input.university.trim(),
-    campus: input.campus.trim(),
-    program: input.program.trim(),
-    homeCity: input.homeCity.trim(),
-    id: crypto.randomUUID(),
-    createdAt: new Date(now).toISOString(),
-    status: "new",
-    notes: "",
-  };
-
-  submittedInquiries.push(record);
-
-  try {
-    const { insertStudentInquiry } = await import("@/lib/supabase");
-    const persisted = await insertStudentInquiry({
-      full_name: record.fullName,
-      phone: record.phone,
-      email: record.email,
-      university: record.university,
-      campus: record.campus,
-      program: record.program,
-      home_city: record.homeCity,
-      status: record.status,
-      notes: record.notes,
-    });
-
-    if (persisted) {
-      return {
-        record: {
-          ...record,
-          id: persisted.id,
-          createdAt: persisted.created_at,
-        },
-        duplicate: false,
-      };
-    }
-  } catch {
-    // Fall back to in-memory persistence when Supabase is not configured.
-  }
-
-  return { record, duplicate: false };
-}
+// Persistence lives in lib/supabase.ts. This module stays free of server-only
+// imports because the inquiry form (a Client Component) shares its validators.
