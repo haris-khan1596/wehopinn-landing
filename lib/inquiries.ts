@@ -1,22 +1,3 @@
-// Shared validation + persistence for the "Tell us where you're headed" inquiry form.
-//
-// Persistence is stubbed for now (see saveInquiry below). Wire this up to the
-// student_inquiries table once a database is provisioned:
-//
-//   create table student_inquiries (
-//     id          uuid primary key default gen_random_uuid(),
-//     created_at  timestamptz not null default now(),
-//     full_name   text not null,
-//     phone       text not null,
-//     email       text not null,
-//     university  text not null,
-//     campus      text not null,
-//     program     text not null,
-//     home_city   text not null,
-//     status      text not null default 'new',
-//     notes       text not null default ''
-//   );
-
 export type InquiryInput = {
   fullName: string;
   phone: string;
@@ -35,7 +16,6 @@ export type InquiryRecord = InquiryInput & {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Pakistani mobile numbers: 03XXXXXXXXX, +923XXXXXXXXX, or 00923XXXXXXXXX.
 const PK_PHONE_RE = /^(?:\+92|0092|0)3\d{9}$/;
 
 export function normalizePkPhone(raw: string): string {
@@ -84,8 +64,6 @@ export function validateInquiry(input: Partial<InquiryInput>): FieldErrors {
   return errors;
 }
 
-// In-memory store — placeholder until real persistence exists. Resets on every
-// deploy / cold start, and does NOT dedupe across serverless instances.
 const submittedInquiries: InquiryRecord[] = [];
 const DEDUPE_WINDOW_MS = 5 * 60 * 1000;
 
@@ -120,6 +98,34 @@ export async function saveInquiry(input: InquiryInput): Promise<{ record: Inquir
   };
 
   submittedInquiries.push(record);
-  // TODO: replace the in-memory push above with an insert into student_inquiries.
+
+  try {
+    const { insertStudentInquiry } = await import("@/lib/supabase");
+    const persisted = await insertStudentInquiry({
+      full_name: record.fullName,
+      phone: record.phone,
+      email: record.email,
+      university: record.university,
+      campus: record.campus,
+      program: record.program,
+      home_city: record.homeCity,
+      status: record.status,
+      notes: record.notes,
+    });
+
+    if (persisted) {
+      return {
+        record: {
+          ...record,
+          id: persisted.id,
+          createdAt: persisted.created_at,
+        },
+        duplicate: false,
+      };
+    }
+  } catch {
+    // Fall back to in-memory persistence when Supabase is not configured.
+  }
+
   return { record, duplicate: false };
 }

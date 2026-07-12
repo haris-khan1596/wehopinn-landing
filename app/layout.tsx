@@ -22,10 +22,37 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const metadataBase = new URL("https://wehopinn.com");
+
 export const metadata: Metadata = {
-  title: "WeHopInn — Coming soon",
+  metadataBase,
+  title: "WeHopinn | Student Accommodation in Islamabad",
   description:
-    "Verified, university-mapped hostels for students in Islamabad — with in-person checks and a WhatsApp recommendation in 24 hours. Find your hostel.",
+    "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching. Tell us what you need and we will shortlist suitable options within 24 hours.",
+  keywords: ["student accommodation", "Islamabad hostels", "university housing", "student housing Islamabad"],
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "WeHopinn | Student Accommodation in Islamabad",
+    description:
+      "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching.",
+    url: "/",
+    siteName: "WeHopinn",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WeHopinn | Student Accommodation in Islamabad",
+    description:
+      "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching.",
+  },
+  icons: {
+    icon: "/favicon.svg",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

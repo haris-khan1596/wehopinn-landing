@@ -106,13 +106,10 @@ export function InquiryForm({ variant = "light" }: Props) {
         />
         <div>
           <p className={"font-semibold " + (dark ? "text-[#FFFCEF]" : "text-brand")}>
-            We&apos;re on it 🙌
+            Thank you!
           </p>
           <p className={"mt-1 text-sm leading-relaxed " + (dark ? "text-[#FFFCEF]/65" : "text-ink-2")}>
-            We&apos;ve received your details. Our team will review your university and location, then reach out to understand exactly what you&apos;re looking for.
-          </p>
-          <p className={"mt-2 text-sm " + (dark ? "text-[#FFFCEF]/45" : "text-ink-muted")}>
-            Keep an eye on your phone and WhatsApp.
+            We&apos;ve received your request. Our team will personally search and send you a shortlist of suitable accommodation within 24 hours.
           </p>
         </div>
       </div>
@@ -131,10 +128,10 @@ export function InquiryForm({ variant = "light" }: Props) {
   return (
     <div>
       <p className={"font-semibold " + (dark ? "text-[#FFFCEF]" : "text-brand")}>
-        Tell us where you&apos;re headed
+        Tell us about your move
       </p>
       <p className={"mb-5 mt-1 text-sm " + (dark ? "text-[#FFFCEF]/50" : "text-ink-muted")}>
-        Share a few details. We&apos;ll start looking for places that fit.
+        Share a few details so we can start matching you with the right options.
       </p>
 
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
@@ -324,13 +321,13 @@ export function InquiryForm({ variant = "light" }: Props) {
             </>
           ) : (
             <>
-              Find me a hostel
+              Find My Accommodation
               <ArrowRight className="size-4" />
             </>
           )}
         </button>
         <p className={"text-center text-xs " + (dark ? "text-[#FFFCEF]/45" : "text-ink-muted")}>
-          No endless calls. We&apos;ll personally look into your options.
+          No endless calls. We will personally look into your options.
         </p>
       </form>
     </div>
