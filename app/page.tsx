@@ -162,7 +162,7 @@ export default function Home() {
               <p className="mb-5 text-sm text-[#FFFCEF]/50">
                 Tell us a bit about yourself and we&apos;ll match you to a verified hostel.
               </p>
-              <WaitlistForm variant="dark" />
+              <WaitlistForm variant="dark" source="hero" />
             </div>
           </div>
         </div>
@@ -339,7 +339,7 @@ export default function Home() {
                 Join students already on the waitlist. We&apos;ll email you and WhatsApp you the moment we go live.
               </p>
             </div>
-            <WaitlistForm variant="dark" />
+            <WaitlistForm variant="dark" source="footer-cta" />
           </div>
         </div>
       </section>
