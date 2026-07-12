@@ -39,14 +39,14 @@ export const metadata: Metadata = {
     siteName: "WeHopinn",
     type: "website",
     locale: "en_US",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "WeHopinn | Student Accommodation in Islamabad",
     description:
       "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching.",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: "/favicon.svg",
