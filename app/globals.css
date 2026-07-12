@@ -36,7 +36,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 
   --container-page: 1280px;
-  --container-narrow: 880px;
+  --container-narrow: 1040px;
 }
 
 :root {
@@ -95,6 +95,7 @@
   padding: 10px 12px;
   color: var(--ink);
   font: inherit;
+  font-size: 14px;
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
@@ -113,6 +114,7 @@
   padding: 10px 12px;
   color: #FFFCEF;
   font: inherit;
+  font-size: 14px;
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }

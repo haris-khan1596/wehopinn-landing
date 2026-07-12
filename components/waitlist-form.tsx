@@ -1,8 +1,7 @@
 "use client";
 
 import { ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
-import { useActionState, useEffect, useRef, useState } from "react";
-import { submitWaitlist, type WaitlistState } from "@/app/actions/waitlist";
+import { useEffect, useRef, useState } from "react";
 
 const UNIVERSITIES = [
   "NUST",
@@ -16,24 +15,25 @@ const UNIVERSITIES = [
   "Other",
 ];
 
-const INITIAL_STATE: WaitlistState = { status: "idle" };
+type Props = { variant?: "light" | "dark" };
 
-type Props = { variant?: "light" | "dark"; source?: string };
-
-export function WaitlistForm({ variant = "light", source = "landing" }: Props) {
+export function WaitlistForm({ variant = "light" }: Props) {
   const dark = variant === "dark";
 
-  // Fields stay controlled: React resets *uncontrolled* inputs once an action
-  // settles, which would wipe what the student typed when validation fails.
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [university, setUniversity] = useState("");
   const [city, setCity] = useState("");
   const [program, setProgram] = useState("");
-  const [university, setUniversity] = useState("");
-  const [state, formAction, pending] = useActionState(submitWaitlist, INITIAL_STATE);
+  const [done, setDone] = useState(false);
 
-  if (state.status === "success") {
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setDone(true);
+  }
+
+  if (done) {
     return (
       <div
         className={
@@ -58,63 +58,47 @@ export function WaitlistForm({ variant = "light", source = "landing" }: Props) {
   }
 
   const inputClass = dark ? "dark-input" : "input";
-  const errors = state.errors ?? {};
 
   return (
-    <form action={formAction} className="flex flex-col gap-3">
-      <input type="hidden" name="source" value={source} />
-
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <div className="grid gap-3 sm:grid-cols-2">
-        <Field error={errors.name} dark={dark}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className={inputClass}
-          />
-        </Field>
-        <Field error={errors.email} dark={dark}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={inputClass}
-          />
-        </Field>
-      </div>
-
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field error={errors.whatsapp} dark={dark}>
-          <input
-            type="tel"
-            name="whatsapp"
-            placeholder="WhatsApp number — e.g. 03001234567"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(e.target.value)}
-            className={inputClass}
-          />
-        </Field>
         <input
           type="text"
-          name="city"
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className={inputClass}
+        />
+        <input
+          type="email"
+          placeholder="Your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className={inputClass}
+        />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <input
+          type="tel"
+          placeholder="WhatsApp number — e.g. 03001234567"
+          value={whatsapp}
+          onChange={(e) => setWhatsapp(e.target.value)}
+          className={inputClass}
+        />
+        <input
+          type="text"
           placeholder="City (optional)"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           className={inputClass}
         />
       </div>
-
       <div className="grid gap-3 sm:grid-cols-2">
         <UniversitySelect value={university} onChange={setUniversity} dark={dark} />
         <input
           type="text"
-          name="program"
           placeholder="Program (optional)"
           value={program}
           onChange={(e) => setProgram(e.target.value)}
@@ -122,15 +106,8 @@ export function WaitlistForm({ variant = "light", source = "landing" }: Props) {
         />
       </div>
 
-      {state.message && (
-        <p className={"text-sm " + (dark ? "text-[#FFB4A2]" : "text-red-600")}>
-          {state.message}
-        </p>
-      )}
-
       <button
         type="submit"
-        disabled={pending}
         className={
           "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-opacity disabled:opacity-60 " +
           (dark
@@ -138,29 +115,10 @@ export function WaitlistForm({ variant = "light", source = "landing" }: Props) {
             : "bg-brand text-[#FFFCEF] hover:bg-brand-2")
         }
       >
-        {pending ? "Sending…" : "Find my hostel"}
-        {!pending && <ArrowRight className="size-4" />}
+        Find my hostel
+        <ArrowRight className="size-4" />
       </button>
     </form>
-  );
-}
-
-function Field({
-  error,
-  dark,
-  children,
-}: {
-  error?: string;
-  dark: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1">
-      {children}
-      {error && (
-        <span className={"text-xs " + (dark ? "text-[#FFB4A2]" : "text-red-600")}>{error}</span>
-      )}
-    </div>
   );
 }
 
@@ -195,7 +153,6 @@ function UniversitySelect({
 
   return (
     <div ref={ref} className="relative">
-      <input type="hidden" name="university" value={value} />
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}

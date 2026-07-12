@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveInquiry, validateInquiry, type InquiryInput } from "@/lib/inquiries";
+import { validateInquiry, type InquiryInput } from "@/lib/inquiries";
+import { saveInquiry } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -23,7 +24,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Please check the highlighted fields.", fieldErrors: errors }, { status: 400 });
   }
 
-  const { record, duplicate } = await saveInquiry(input as InquiryInput);
+  try {
+    await saveInquiry(input as InquiryInput);
+  } catch (err) {
+    console.error("inquiry insert failed", err);
+    return NextResponse.json(
+      { error: "We couldn't save your request. Please try again." },
+      { status: 500 },
+    );
+  }
 
-  return NextResponse.json({ ok: true, id: record.id, duplicate }, { status: duplicate ? 200 : 201 });
+  return NextResponse.json({ ok: true }, { status: 201 });
 }
