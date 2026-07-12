@@ -18,7 +18,7 @@ export type StudentInquiryInsert = {
 // Server-only client. It uses the publishable (anon) key, which is safe here
 // because student_inquiries grants anon INSERT and nothing else — leads can
 // never be read back with this key.
-function supabaseServer() {
+export function supabaseServer() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY;
 
