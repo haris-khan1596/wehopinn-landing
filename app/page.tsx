@@ -269,7 +269,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-bg-warm px-8 py-20">
+      <section className="bg-bg-warm px-8 py-20 hidden">
         <div className="mx-auto max-w-page">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">Social proof placeholder</span>
