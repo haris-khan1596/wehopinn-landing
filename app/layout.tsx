@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "WeHopInn — Coming soon",
   description:
-    "Verified, university-mapped hostels for students in Islamabad — with in-person checks and a WhatsApp recommendation in 24 hours. Join the waitlist.",
+    "Verified, university-mapped hostels for students in Islamabad — with in-person checks and a WhatsApp recommendation in 24 hours. Find your hostel.",
 };
 
 export default function RootLayout({
