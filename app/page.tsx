@@ -223,23 +223,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-bg-warm px-8 py-20">
+      <section
+        className="relative overflow-hidden bg-brand px-8 py-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse at 115% -5%, rgba(212,165,116,0.30) 0%, transparent 48%), " +
+            "radial-gradient(ellipse at -15% 115%, rgba(212,165,116,0.13) 0%, transparent 48%)",
+        }}
+      >
         <div className="mx-auto max-w-page">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">How it works</span>
-            <h2 className="serif-h mt-3 text-4xl text-brand sm:text-5xl">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">How it works</span>
+            <h2 className="serif-h mt-3 text-4xl text-[#FFFCEF] sm:text-5xl">
               We do the searching, so you do not have to.
             </h2>
           </div>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {HOW_IT_WORKS.map(({ Icon, title, copy }) => (
-              <div key={title} className="rounded-3xl border border-border-tan bg-white p-7">
-                <span className="grid size-12 place-items-center rounded-2xl bg-brand-soft text-brand">
+              <div key={title} className="rounded-3xl border border-[#FFFCEF]/12 bg-[#FFFCEF]/7 p-7 backdrop-blur-sm">
+                <span className="grid size-12 place-items-center rounded-2xl bg-[#FFFCEF]/10 text-accent">
                   <Icon className="size-5" strokeWidth={1.8} />
                 </span>
-                <h3 className="serif-h mt-5 text-2xl text-brand">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-2">{copy}</p>
+                <h3 className="serif-h mt-5 text-2xl text-[#FFFCEF]">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#FFFCEF]/65">{copy}</p>
               </div>
             ))}
           </div>
