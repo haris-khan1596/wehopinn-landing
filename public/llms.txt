@@ -1,0 +1,40 @@
+# WeHopinn
+
+> WeHopinn helps students in Islamabad, Pakistan find trusted, personally
+> verified accommodation without the stress of endless searching. Students
+> share a few details and WeHopinn shortlists suitable, verified options —
+> free during the current MVP phase — typically within 24 hours.
+
+WeHopinn is a student accommodation matching service. It is currently launching
+in Islamabad and focuses on students at local universities (NUST, COMSATS,
+FAST-NU, Air University, QAU, IIUI, Bahria University, SZABIST). Every
+recommendation is personally verified through in-person visits before being
+shortlisted. Parents can also submit requests on behalf of their children.
+
+## How it works
+
+- Tell us about yourself: university, campus, program, home city, and preferences.
+- We search and verify: options are personally reviewed and inspected on the ground.
+- Receive a shortlist within 24 hours matched to your needs and budget.
+
+## Key facts
+
+- Service area: Islamabad, Pakistan (expanding to more areas over time).
+- Audience: university students and their parents.
+- Cost: free for students during the MVP phase.
+- Verification: accommodations are visited and verified in person before recommendation.
+- Response time: shortlist typically delivered within 24 hours.
+- Contact: hello@wehopinn.com
+
+## Pages
+
+- [Home](https://wehopinn.com): Overview, how it works, why WeHopinn, FAQ, and the accommodation request form.
+
+## FAQ
+
+- How much does the service cost? Free for students during the MVP phase.
+- When will I hear back? A shortlist is aimed for within 24 hours of the request.
+- How do you verify accommodations? Options are personally reviewed and only places we would send a student to are recommended.
+- Do you visit accommodations? Yes, properties are visited and verified before recommendation.
+- Can parents submit requests? Yes, parents can submit on behalf of their child.
+- What universities do you support? Starting with universities in Islamabad, expanding over time.
