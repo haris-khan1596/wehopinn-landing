@@ -1,60 +1,70 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans, Playfair_Display } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-heading",
+  display: "swap",
 });
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
   variable: "--font-body",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const metadataBase = new URL("https://wehopinn.com");
+
+const OG_IMAGE = {
+  url: "/og-image.jpg",
+  width: 1200,
+  height: 630,
+  alt: "WeHopinn — trusted student accommodation in Islamabad",
+  type: "image/jpeg",
+};
 
 export const metadata: Metadata = {
   metadataBase,
   title: "WeHopinn | Student Accommodation in Islamabad",
   description:
-    "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching. Tell us what you need and we will shortlist suitable options within 24 hours.",
+    "Find trusted student accommodation in Islamabad without the endless searching. Tell us what you need and we shortlist verified options within 24 hours.",
   keywords: ["student accommodation", "Islamabad hostels", "university housing", "student housing Islamabad"],
   alternates: { canonical: "/" },
   openGraph: {
     title: "WeHopinn | Student Accommodation in Islamabad",
     description:
-      "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching.",
+      "WeHopinn helps students in Islamabad skip the endless search and find verified accommodation, shortlisted within 24 hours.",
     url: "/",
     siteName: "WeHopinn",
     type: "website",
     locale: "en_US",
-    images: ["/og-image.png"],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "WeHopinn | Student Accommodation in Islamabad",
     description:
-      "WeHopinn helps students in Islamabad find trusted accommodation without the stress of endless searching.",
-    images: ["/og-image.png"],
+      "WeHopinn helps students in Islamabad skip the endless search and find verified accommodation, shortlisted within 24 hours.",
+    images: [OG_IMAGE],
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F3D2E",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -65,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSans.variable} ${playfairDisplayHeading.variable} h-full antialiased`}
+      className={`${notoSans.variable} ${playfairDisplayHeading.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">{children}</body>
     </html>

@@ -4,11 +4,8 @@ import {
   CheckCircle2,
   Clock,
   Compass,
-  HeartHandshake,
-  ImageIcon,
   MapPin,
   MessageCircleQuestion,
-  Quote,
   ShieldCheck,
   Sparkles,
   Star,
@@ -68,41 +65,6 @@ const WHY_WEHOPINN: { Icon: LucideIcon; title: string; copy: string }[] = [
   },
 ];
 
-const SOCIAL_PROOF: {
-  Icon: LucideIcon;
-  label: string;
-  text: string;
-  attribution: string;
-  quoted?: boolean;
-}[] = [
-  {
-    Icon: Quote,
-    label: "Student story",
-    text: "Student stories and testimonials will appear here as soon as we start helping more students.",
-    attribution: "Coming soon",
-    quoted: true,
-  },
-  {
-    Icon: Quote,
-    label: "Parent reassurance",
-    text: "Parent feedback and trust notes will appear here once we begin supporting families directly.",
-    attribution: "Coming soon",
-    quoted: true,
-  },
-  {
-    Icon: ImageIcon,
-    label: "Verified photos",
-    text: "Real hostel photos from our visits will be shared here.",
-    attribution: "Verified by our team",
-  },
-  {
-    Icon: Users,
-    label: "Impact snapshot",
-    text: "Student support numbers and milestones will appear once the service is live.",
-    attribution: "More to come",
-  },
-];
-
 const FAQ_ITEMS = [
   {
     question: "How much does the service cost?",
@@ -130,9 +92,70 @@ const FAQ_ITEMS = [
   },
 ];
 
+const SITE_URL = "https://wehopinn.com";
+
+// TODO: replace with the real WhatsApp business number (E.164, digits only,
+// e.g. "923001234567"). Used for the wa.me link and the Organization contactPoint.
+const WHATSAPP_NUMBER = "923000000000";
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#org`,
+      name: "WeHopinn",
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo-white.svg`,
+      email: "hello@wehopinn.com",
+      description:
+        "WeHopinn helps students in Islamabad find trusted, personally verified accommodation, shortlisted within 24 hours.",
+      areaServed: { "@type": "City", name: "Islamabad", "@id": "https://www.wikidata.org/wiki/Q1362" },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "hello@wehopinn.com",
+        telephone: `+${WHATSAPP_NUMBER}`,
+        areaServed: "PK",
+        availableLanguage: ["en", "ur"],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "WeHopinn",
+      inLanguage: "en",
+      publisher: { "@id": `${SITE_URL}/#org` },
+    },
+    {
+      "@type": "Service",
+      "@id": `${SITE_URL}/#service`,
+      name: "Student accommodation matching",
+      serviceType: "Student accommodation search and verification",
+      provider: { "@id": `${SITE_URL}/#org` },
+      areaServed: { "@type": "City", name: "Islamabad" },
+      audience: { "@type": "EducationalAudience", educationalRole: "student" },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE_URL}/#faq`,
+      mainEntity: FAQ_ITEMS.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <div className="flex min-h-svh flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       <section
         className="relative flex flex-col overflow-hidden bg-brand"
         style={{
@@ -163,7 +186,7 @@ export default function Home() {
               should not feel like a full-time job.
             </h1>
 
-            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-[#FFFCEF]/65">
+            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-[#FFFCEF]/80">
               WeHopinn helps students in Islamabad skip the endless search, the unreliable listings, and the stress of moving to a new city. Tell us what you need and we will personally shortlist the right options for you.
             </p>
 
@@ -191,7 +214,7 @@ export default function Home() {
                 <Sparkles className="size-4 text-accent" strokeWidth={1.8} />
                 <p className="font-semibold text-[#FFFCEF]">Find my accommodation</p>
               </div>
-              <p className="mb-5 text-sm text-[#FFFCEF]/50">
+              <p className="mb-5 text-sm text-[#FFFCEF]/70">
                 Share a few details and we will start looking for places that fit your needs.
               </p>
               <InquiryForm variant="dark" />
@@ -276,33 +299,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-bg-warm px-8 py-20 hidden">
-        <div className="mx-auto max-w-page">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">Social proof placeholder</span>
-            <h2 className="serif-h mt-3 text-4xl text-brand sm:text-5xl">
-              Trusted by students and families who want less guesswork.
-            </h2>
-            <p className="mt-4 text-ink-2">
-              This space will soon hold real stories, verified photos, and early student impact so the trust feels tangible.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {SOCIAL_PROOF.map(({ Icon, label, text, attribution, quoted }) => (
-              <div key={label} className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border-tan-2 bg-white p-8 text-center">
-                <span className="grid size-11 place-items-center rounded-2xl bg-bg-warm text-ink-faint">
-                  <Icon className="size-5" strokeWidth={1.8} />
-                </span>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">{label}</span>
-                <p className="italic text-ink-2">{quoted ? <>&ldquo;{text}&rdquo;</> : text}</p>
-                <p className="text-sm text-ink-faint">{attribution}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="bg-background px-8 py-20">
         <div className="mx-auto max-w-page">
           <div className="mx-auto max-w-3xl text-center">
@@ -332,7 +328,7 @@ export default function Home() {
               <h2 className="serif-h mt-3 text-4xl text-[#FFFCEF] sm:text-5xl">
                 Tell us what you need and we will take it from there.
               </h2>
-              <p className="mt-4 max-w-sm text-[#FFFCEF]/60">
+              <p className="mt-4 max-w-sm text-[#FFFCEF]/80">
                 We will personally search, verify and send you a shortlist of suitable accommodation within 24 hours.
               </p>
             </div>
@@ -343,11 +339,21 @@ export default function Home() {
 
       <footer className="border-t border-[#FFFCEF]/10 bg-brand px-8 py-6">
         <div className="mx-auto flex max-w-page flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Decorative — the brand name is already announced in the header logo. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-white.svg" alt="WeHopinn" width={100} height={24} style={{ opacity: 0.45 }} />
-          <div className="flex flex-wrap items-center gap-4 text-[13px] text-[#FFFCEF]/45">
-            <a href="mailto:hello@wehopinn.com" className="transition hover:text-[#FFFCEF]/75">hello@wehopinn.com</a>
+          <img src="/logo-white.svg" alt="" width={100} height={24} style={{ opacity: 0.45 }} />
+          <div className="flex flex-wrap items-center gap-4 text-[13px] text-[#FFFCEF]/65">
+            <a href="mailto:hello@wehopinn.com" className="transition hover:text-[#FFFCEF]">hello@wehopinn.com</a>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition hover:text-[#FFFCEF]"
+            >
+              WhatsApp
+            </a>
             <span>Instagram · coming soon</span>
+            <span>Islamabad, Pakistan</span>
             <span>© {new Date().getFullYear()} WeHopinn</span>
           </div>
         </div>
