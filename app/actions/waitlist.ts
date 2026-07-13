@@ -1,6 +1,7 @@
 "use server";
 
 import { supabaseServer } from "@/lib/supabase";
+import { notifySlackLead } from "@/lib/slack";
 import {
   parseWaitlistForm,
   toWaitlistRow,
@@ -44,6 +45,19 @@ export async function submitWaitlist(
       message: "Something went wrong on our side. Please try again.",
     };
   }
+
+  await notifySlackLead({
+    emoji: "📝",
+    title: "New waitlist signup",
+    subtitle: `*${input.name}*  ·  ${input.email}`,
+    fields: [
+      { label: "WhatsApp", value: input.whatsapp },
+      { label: "University", value: input.university },
+      { label: "City", value: input.city },
+      { label: "Program", value: input.program },
+    ],
+    footer: `Source: ${source}`,
+  });
 
   return { status: "success" };
 }
