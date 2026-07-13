@@ -48,13 +48,8 @@ export const metadata: Metadata = {
       "WeHopinn helps students in Islamabad skip the endless search and find verified accommodation, shortlisted within 24 hours.",
     images: [OG_IMAGE],
   },
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
+  // Icons are provided by the app/ file conventions (favicon.ico, icon.svg,
+  // apple-icon.png), which Next auto-detects and which override metadata.icons.
   robots: {
     index: true,
     follow: true,

@@ -94,9 +94,10 @@ const FAQ_ITEMS = [
 
 const SITE_URL = "https://wehopinn.com";
 
-// TODO: replace with the real WhatsApp business number (E.164, digits only,
-// e.g. "923001234567"). Used for the wa.me link and the Organization contactPoint.
-const WHATSAPP_NUMBER = "923000000000";
+// WhatsApp business number in E.164, digits only. Feeds the wa.me link and the
+// Organization contactPoint.
+const WHATSAPP_NUMBER = "923037279436";
+const INSTAGRAM_URL = "https://www.instagram.com/wehopinn.official";
 
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -111,6 +112,7 @@ const JSON_LD = {
       description:
         "WeHopinn helps students in Islamabad find trusted, personally verified accommodation, shortlisted within 24 hours.",
       areaServed: { "@type": "City", name: "Islamabad", "@id": "https://www.wikidata.org/wiki/Q1362" },
+      sameAs: [INSTAGRAM_URL],
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
@@ -352,7 +354,14 @@ export default function Home() {
             >
               WhatsApp
             </a>
-            <span>Instagram · coming soon</span>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition hover:text-[#FFFCEF]"
+            >
+              Instagram
+            </a>
             <span>Islamabad, Pakistan</span>
             <span>© {new Date().getFullYear()} WeHopinn</span>
           </div>
